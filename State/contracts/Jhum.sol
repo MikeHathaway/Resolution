@@ -8,20 +8,28 @@ import "../node_modules/openzeppelin-solidity/contracts/payment/escrow/Condition
 
 contract Jhum is ConditionalEscrow {
 
-	bytes32 name;
+	uint256 goal;
+	bytes32 duration;
 	address validator;
+	address payable private donationTarget;
 
-    struct Participants { mapping(address => uint) flags; }
-
-    constructor(bytes32 _name, address _validator) public {
-		name = _name;
+    mapping(uint256 => address) private _participants;
+    
+	constructor(uint256 _goal, address _validator, address payable _donationTarget) public {
+		goal = _goal;
 		validator = _validator;
-		ConditionalEscrow();
+		donationTarget = _donationTarget;
+		ConditionalEscrow(msg.sender);
 	}
-	
-	
-	function withdrawalAllowed(address payee) public {
-		if(msg.sender(payee) == validator) {
+
+	function participantsOf(uint256 _goal) public view returns (address) {
+		return _participants[_goal];
+	}
+
+	// TODO: Check to see if validator signed off && time period has elapsed
+	function withdrawalAllowed(address payee) public view returns (bool) {
+		if(msg.sender == validator) {
+			// check time elapsed
 			return true;
 		}	
 	}
@@ -32,7 +40,8 @@ contract Jhum is ConditionalEscrow {
 
 	}
 
+	// if validator does not sign message verifying conditions are met, send contract value to specified contract
 	function burnValue() public {
-	
+		// send to donation target	
 	}
 }
