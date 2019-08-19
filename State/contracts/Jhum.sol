@@ -10,13 +10,15 @@ contract Jhum is ConditionalEscrow {
 
 	uint256 goal;
 	uint256 wageredAmount;
+	uint256 endDate;
+	
 	bytes32 duration;
 	address validator;
 	address payable donationTarget;
 
     mapping(uint256 => address) private _participants;
 
-	event Burn(uint256 _goal, address indexed payable donationTarget);
+	event Burn(uint256 _goal, address indexed donationTarget);
 
 	constructor(uint256 _goal, address _validator, address payable _donationTarget) public {
 		goal = _goal;
@@ -29,12 +31,27 @@ contract Jhum is ConditionalEscrow {
 		return _participants[_goal];
 	}
 
+	function startGoal(address payee) public {
+		deposit(payee);	
+		_participants[payee] = _participants[payee].add(payee);
+	}
+
 	// TODO: Check to see if validator signed off && time period has elapsed
 	function withdrawalAllowed(address payee) public view returns (bool) {
 		if(msg.sender == validator) {
 			// check time elapsed
-			return true;
-		}	
+			if(block.number >= endDate) {
+				return true;
+			}
+		}
+		return false;	
+	}
+
+	// Use Escrow methods to return funds to depositor on request
+	function returnFunds(address payee) public {
+		require(withdrawalAllowed(payee));
+		withdraw(_deposits[payee]);
+		emit Withdrawn(payee, _deposits[payee]);
 	}
 
 	// if validator sends signed message that terms are being met, lengthen period to escrow burn 
@@ -57,4 +74,9 @@ contract Jhum is ConditionalEscrow {
 		// send to donation target
 		return donationTarget.send(wageredAmount);
 	}
+
+	// fallback function to return sent eth back to sender minus gas
+	function () external payable {
+		msg.sender.transfer(msg.value);
+	} 
 }
