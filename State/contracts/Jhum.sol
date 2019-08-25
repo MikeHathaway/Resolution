@@ -6,49 +6,78 @@ import "../node_modules/openzeppelin-solidity/contracts/payment/escrow/Condition
 // https://blog.zeppelin.solutions/a-gentle-introduction-to-ethereum-programming-part-3-abdd9644d0c2
 // https://github.com/ethereum/wiki/wiki/JavaScript-API#contract-events
 
-contract Jhum is ConditionalEscrow {
-
-	uint256 goal;
-	uint256 wageredAmount;
-	uint256 endDate;
-	
-	address validator;
-	address payable donationTarget;
+contract Resolution is ConditionalEscrow {
 
 	struct Resolution {
 		string resolutionName;
-		uint256 resolutionId;
+		string resolutionId;
 		uint256 wageredAmount;
-		uint256 endBlock;
+		uint256 createdAtBlock;
 		address validator;
 		address payable donationTarget;	
-	
-    	mapping(uint256 => address) private _participants;
+		bool initialized;		
+		bool isOnTrack;		
+		
+		// TODO: determine mapping vs address[]
+		address[] participants;	
+		//mapping(uint256 => address) participants;
 	}
 
-	// define mapping to Resolution struct
-	mapping(uint256 => Resolution) private _resolutions;
+	mapping(string => Resolution) private resolutions;
+	bytes32[] public resolutionIndex;
 
+	event ResolutionCreated(string resolutionName, string resolutionId);
+	event RejectCreate(address account, string uuid, string message);
 	event Burn(uint256 _goal, address indexed donationTarget);
 
 	constructor(uint256 _goal, address _validator, address payable _donationTarget) public {
-		goal = _goal;
-		validator = _validator;
-		donationTarget = _donationTarget;
 		ConditionalEscrow(msg.sender);
 	}
 
-	function participantsOf(uint256 _goal) public view returns (address) {
-		return _participants[_goal];
+
+
+
+
+	function participantsOf(uint256 resolutionId) public view returns (address) {
+		// return resolutions[resolutionId].participants;
 	}
 
-	function startResolution(address payee, uint256 resolutionId) public {
-		deposit(payee);	
-		_resolutions[resolutionId].value += msg.sender.value
+
+
+
+
+
+	function shouldCreate(string memory resolutionId) private returns (bool) {
+    	if(resolutions[resolutionId].initialized) {
+        	emit RejectCreate(msg.sender, resolutionId, "Asset with this resolutionId already exists.");
+        	return false;
+      	}
+
+		return true;
 	}
+
+	/**
+		* Create a new Resolution
+	   	* @param payee Creater of a new Resolution state
+	   	* @return  
+	*/
+	function createResolution(string memory resolutionName, string memory resolutionId, address resolutionEscrow, address donationTarget) public {
+		require(shouldCreate(resolutionId));
+
+		deposit(resolutionEscrow);	
+	
+		resolutions[resolutionId] = Resolution(resolutionName, resolutionId);
+	
+		emit ResolutionCreated(resolutionName, resolutionId);
+	}
+
+
+
+
+
 
 	// TODO: Check to see if validator signed off && time period has elapsed
-	function withdrawalAllowed(address payee) public view returns (bool) {
+	function withdrawalAllowed(address payee, uint256 endDate, address validator) public view returns (bool) {
 		if(msg.sender == validator) {
 			// check time elapsed
 			if(block.number >= endDate) {
@@ -62,7 +91,7 @@ contract Jhum is ConditionalEscrow {
 	function returnFunds(address payee) public {
 		require(withdrawalAllowed(payee));
 		//withdraw(_deposits[payee]);
-		//emit Withdrawn(payee, _deposits[payee]);
+		// emit Withdrawn(payee, _deposits[payee]);
 	}
 
 	// if validator sends signed message that terms are being met, lengthen period to escrow burn 
@@ -77,7 +106,7 @@ contract Jhum is ConditionalEscrow {
 	}
 
 	// if validator does not sign message verifying conditions are met, send contract value to specified contract
-	function burnValue(address payable _donationTarget) public returns (bool) {
+	function burnValue(address payable donationTarget, uint256 wageredAmount) public returns (bool) {
 		require(shouldBurn());		
 		// log burn to blockchain for display to clients (TODO: Parameterize event fields)
 		emit Burn(123, 0x0fdaf8757F74e5CAE7DcAd5c0A4A6c27f13eC7FF);	
