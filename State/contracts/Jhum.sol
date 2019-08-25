@@ -12,11 +12,22 @@ contract Jhum is ConditionalEscrow {
 	uint256 wageredAmount;
 	uint256 endDate;
 	
-	bytes32 duration;
 	address validator;
 	address payable donationTarget;
 
-    mapping(uint256 => address) private _participants;
+	struct Resolution {
+		string resolutionName;
+		uint256 resolutionId;
+		uint256 wageredAmount;
+		uint256 endBlock;
+		address validator;
+		address payable donationTarget;	
+	
+    	mapping(uint256 => address) private _participants;
+	}
+
+	// define mapping to Resolution struct
+	mapping(uint256 => Resolution) private _resolutions;
 
 	event Burn(uint256 _goal, address indexed donationTarget);
 
@@ -31,9 +42,9 @@ contract Jhum is ConditionalEscrow {
 		return _participants[_goal];
 	}
 
-	function startGoal(address payee) public {
+	function startResolution(address payee, uint256 resolutionId) public {
 		deposit(payee);	
-		_participants[payee] = _participants[payee].add(payee);
+		_resolutions[resolutionId].value += msg.sender.value
 	}
 
 	// TODO: Check to see if validator signed off && time period has elapsed
@@ -50,8 +61,8 @@ contract Jhum is ConditionalEscrow {
 	// Use Escrow methods to return funds to depositor on request
 	function returnFunds(address payee) public {
 		require(withdrawalAllowed(payee));
-		withdraw(_deposits[payee]);
-		emit Withdrawn(payee, _deposits[payee]);
+		//withdraw(_deposits[payee]);
+		//emit Withdrawn(payee, _deposits[payee]);
 	}
 
 	// if validator sends signed message that terms are being met, lengthen period to escrow burn 
