@@ -85,18 +85,18 @@ contract Resolution is ConditionalEscrow {
 
 
 	// TODO: Check to see if validator signed off && time period has elapsed
-	function withdrawalAllowed(address payee, uint256 endDate, address validator) public view returns (bool) {
-		if(msg.sender == validator) {
+	function withdrawalAllowed(address payee) public view returns (bool) {
+		//if(msg.sender == validator) {
 			// check time elapsed
-			if(block.number >= endDate) {
-				return true;
-			}
-		}
+		//	if(block.number >= endDate) {
+		//		return true;
+		//	}
+		//}
 		return false;	
 	}
 
 	// Use Escrow methods to return funds to depositor on request
-	function returnFunds(address payee) public {
+	function withdraw(address payable payee) public {
 		require(withdrawalAllowed(payee));
 		//withdraw(_deposits[payee]);
 	}
