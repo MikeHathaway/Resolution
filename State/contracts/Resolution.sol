@@ -7,19 +7,20 @@ import "../node_modules/openzeppelin-solidity/contracts/payment/escrow/Condition
 // https://github.com/ethereum/wiki/wiki/JavaScript-API#contract-events
 
 contract Resolution is ConditionalEscrow {
+	
+	address public maintainer;	
 
 	struct Resolution {
 		string resolutionName;
 		string resolutionId;
-		uint256 wageredAmount;
-		uint256 createdAtBlock;
+		address resolutionEscrow;
 		address validator;
 		address payable donationTarget;	
 		bool initialized;		
-		bool isOnTrack;		
+		// bool isOnTrack;		
 		
-		// TODO: determine mapping vs address[]
-		address[] participants;	
+		// TODO add multi participant Resolutions
+		// address[] participants;	
 		//mapping(uint256 => address) participants;
 	}
 
@@ -30,7 +31,7 @@ contract Resolution is ConditionalEscrow {
 	event RejectCreate(address account, string uuid, string message);
 	event Burn(uint256 _goal, address indexed donationTarget);
 
-	constructor(uint256 _goal, address _validator, address payable _donationTarget) public {
+	constructor() public {
 		ConditionalEscrow(msg.sender);
 	}
 
@@ -49,24 +50,31 @@ contract Resolution is ConditionalEscrow {
 
 	function shouldCreate(string memory resolutionId) private returns (bool) {
     	if(resolutions[resolutionId].initialized) {
-        	emit RejectCreate(msg.sender, resolutionId, "Asset with this resolutionId already exists.");
+        	emit RejectCreate(msg.sender, resolutionId, "Resolution with this resolutionId already exists.");
         	return false;
       	}
+
+		// Prevent creations greater than predefined limit
+		if(msg.value > 1 ether){
+        	emit RejectCreate(msg.sender, resolutionId, "Wagered amount too large");
+			return false;
+		}
 
 		return true;
 	}
 
 	/**
 		* Create a new Resolution
-	   	* @param payee Creater of a new Resolution state
-	   	* @return  
+	   	* @param resolutionName Name of Resolution 
+		* @param resolutionId UUID 
+	   	* @return void 
 	*/
-	function createResolution(string memory resolutionName, string memory resolutionId, address resolutionEscrow, address donationTarget) public {
+	function createResolution(string memory resolutionName, string memory resolutionId, address resolutionEscrow, address validator, address payable donationTarget) public {
 		require(shouldCreate(resolutionId));
 
 		deposit(resolutionEscrow);	
 	
-		resolutions[resolutionId] = Resolution(resolutionName, resolutionId);
+		resolutions[resolutionId] = Resolution(resolutionName, resolutionId, resolutionEscrow, validator, donationTarget, true);
 	
 		emit ResolutionCreated(resolutionName, resolutionId);
 	}
@@ -91,7 +99,6 @@ contract Resolution is ConditionalEscrow {
 	function returnFunds(address payee) public {
 		require(withdrawalAllowed(payee));
 		//withdraw(_deposits[payee]);
-		// emit Withdrawn(payee, _deposits[payee]);
 	}
 
 	// if validator sends signed message that terms are being met, lengthen period to escrow burn 

@@ -1,7 +1,16 @@
-const ReviewCoin = artifacts.require("./ReviewCoin.sol");
+const fs = require('fs');
+const Resolution = artifacts.require('./Resolution.sol');
+const fileContent = require('../build/contracts/Resolution.json');
 
 module.exports = function(deployer) {
-    deployer.deploy(ReviewCoin, "Review Coin", "RDAO", 18)
-    // .then(call minterrole contract)
+    deployer.deploy(Resolution)
+		.then(() => {
+		    var contractConfiguration = {
+		        abi: fileContent.abi,
+		        address: Resolution.address
+		    };
+		
+		    fs.writeFileSync('contractConfiguration/Resolution.json', JSON.stringify(contractConfiguration), { flag: 'w' });
+		  })
 };
 

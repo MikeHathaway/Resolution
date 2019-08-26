@@ -16,6 +16,7 @@
   "dependencies": {
     "@aztec/protocol": "^0.8.1",
     "dotenv": "^8.0.0",
+    "ethers": "^4.0.36",
     "fs": "0.0.1-security",
     "openzeppelin-solidity": "2.2.0",
     "tasit-sdk": "0.0.18",
