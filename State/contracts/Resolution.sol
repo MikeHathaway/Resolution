@@ -13,7 +13,8 @@ contract Resolution is ConditionalEscrow {
 	struct Resolution {
 		string resolutionName;
 		string resolutionId;
-		address resolutionEscrow;
+		uint256 resolutionValue;
+		address payable resolutionEscrow;
 		address validator;
 		address payable donationTarget;	
 		bool initialized;		
@@ -67,16 +68,18 @@ contract Resolution is ConditionalEscrow {
 		* Create a new Resolution
 	   	* @param resolutionName Name of Resolution 
 		* @param resolutionId UUID 
-	   	* @return void 
+	   	* @param resolutionEscrow address holding the resolutionFund
+	   	* @param validator address who vouches for Resolution
+ 		* @return void 
 	*/
-	function createResolution(string memory resolutionName, string memory resolutionId, address resolutionEscrow, address validator, address payable donationTarget) public {
+	function createResolution(string memory resolutionName, string memory resolutionId, address payable resolutionEscrow, address validator, address payable donationTarget) public payable {
 		require(shouldCreate(resolutionId));
 
 		deposit(resolutionEscrow);	
 	
-		resolutions[resolutionId] = Resolution(resolutionName, resolutionId, resolutionEscrow, validator, donationTarget, true);
+		resolutions[resolutionId] = Resolution(resolutionName, resolutionId, msg.value, resolutionEscrow, validator, donationTarget, true);
 	
-		emit ResolutionCreated(resolutionName, resolutionId);
+		emit ResolutionCreated(resolutionName, resolutionId, resolutionValue);
 	}
 
 
