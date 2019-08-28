@@ -18,7 +18,6 @@ contract Resolution is ConditionalEscrow {
 		address validator;
 		address payable donationTarget;	
 		bool initialized;		
-		// bool isOnTrack;		
 		
 		// TODO add multi participant Resolutions
 		// address[] participants;	
@@ -28,8 +27,11 @@ contract Resolution is ConditionalEscrow {
 	mapping(string => Resolution) private resolutions;
 	bytes32[] public resolutionIndex;
 
-	event ResolutionCreated(string resolutionName, string resolutionId);
-	event RejectCreate(address account, string uuid, string message);
+	event ResolutionCreated(string resolutionName, string resolutionId, uint256 resolutionValue);
+	event RejectCreate(address callingAccount, string uuid, string message);
+
+	event WithdrawalFailed(address callingAccount, string resolutionId, string message);	
+
 	event Burn(uint256 _goal, address indexed donationTarget);
 
 	constructor() public {
@@ -70,6 +72,7 @@ contract Resolution is ConditionalEscrow {
 		* @param resolutionId UUID 
 	   	* @param resolutionEscrow address holding the resolutionFund
 	   	* @param validator address who vouches for Resolution
+		* @param donationTarget address who receives escrowed funds in the event of failure
  		* @return void 
 	*/
 	function createResolution(string memory resolutionName, string memory resolutionId, address payable resolutionEscrow, address validator, address payable donationTarget) public payable {
@@ -79,7 +82,7 @@ contract Resolution is ConditionalEscrow {
 	
 		resolutions[resolutionId] = Resolution(resolutionName, resolutionId, msg.value, resolutionEscrow, validator, donationTarget, true);
 	
-		emit ResolutionCreated(resolutionName, resolutionId, resolutionValue);
+		emit ResolutionCreated(resolutionName, resolutionId, msg.value);
 	}
 
 
@@ -88,20 +91,22 @@ contract Resolution is ConditionalEscrow {
 
 
 	// TODO: Check to see if validator signed off && time period has elapsed
-	function withdrawalAllowed(address payee) public view returns (bool) {
+	// overrides withdrawalAllowed function in conditionalEscrow
+	function withdrawalAllowed(address validator) public view returns (bool) {
 		//if(msg.sender == validator) {
 			// check time elapsed
-		//	if(block.number >= endDate) {
-		//		return true;
+		//	if(block.number <= endDate) {
+		//		return false;
 		//	}
 		//}
-		return false;	
+		return true;	
 	}
 
 	// Use Escrow methods to return funds to depositor on request
-	function withdraw(address payable payee) public {
-		require(withdrawalAllowed(payee));
-		//withdraw(_deposits[payee]);
+	function withdraw(string memory resolutionId, address payable withdrawalTarget, address validator) public {
+		require(withdrawalAllowed(validator));
+		require(resolutions[resolutionId].initialized == true);
+		withdraw(withdrawalTarget);
 	}
 
 	// if validator sends signed message that terms are being met, lengthen period to escrow burn 
