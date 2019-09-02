@@ -88,7 +88,10 @@ contract Resolution is ConditionalEscrow {
 
 
 
-
+	//https://medium.com/@angellopozo/ethereum-signing-and-validating-13a2d7cb0ee3
+	function isSigned(address _addr, bytes32 msgHash, uint8 v, bytes32 r, bytes32 s) private returns (bool) {
+		return ecrecover(msgHash, v, r, s) == _addr;
+	}
 
 	// TODO: Check to see if validator signed off && time period has elapsed
 	// overrides withdrawalAllowed function in conditionalEscrow
