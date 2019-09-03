@@ -1,12 +1,13 @@
 pragma solidity ^0.5.7;
 
-//https://github.com/porobov/charities-accepting-ether
 contract Charities {
 
 	address owner;
-
-	struct Donation {
-		address[] confirmedCharities;
+	address[] confirmedCharities;
+	
+	struct Charity {
+		address charityAddress;
+		string charityName;
 	}
 	
 	constructor() public {
@@ -18,8 +19,8 @@ contract Charities {
 		_;
 	}
 
-	function getCharities() public returns (memory) {
-		return Donation;
+	function getCharities() public view returns (address[] memory) {
+		return confirmedCharities;
 	}
 
 	/**
@@ -27,7 +28,13 @@ contract Charities {
 	   	* @param charity Wallet address of charity to add 
  		* @return address of created charity 
 	*/
-	function addCharity(address charity) onlyOwner returns (address) {
+	function addCharity(address charity) public onlyOwner returns (address) {
+		confirmedCharities.push(charity);
 		return charity;	
+	}
+
+	function removeCharity(address charity) public onlyOwner returns (address) {
+		// TODO: add logic for removing charity
+		return charity;
 	}
 }

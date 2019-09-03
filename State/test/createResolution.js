@@ -1,11 +1,11 @@
 const ethers = require('ethers');
-const resolutionABI = require('./contractConfiguration/Resolution.json');
+const resolutionABI = require('../contractConfiguration/Resolution.json');
 const fs = require('fs');
 
 function connectToContract(){
 	const provider = new ethers.providers.JsonRpcProvider()
 
-	const contractAddress = "0x2DeE1D4c4a632335e4f4b7Ca48a5b7686B20b439"
+	const contractAddress = "0xB869DcA31a2817fa814B78c9c5cE6A52f6311782"
 
 	const contract = new ethers.Contract(contractAddress, resolutionABI.abi, provider);
 

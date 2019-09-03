@@ -2,3 +2,5 @@
 const acceptedCharities = [];
 
 export default acceptedCharities;
+
+

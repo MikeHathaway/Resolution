@@ -89,7 +89,7 @@ contract Resolution is ConditionalEscrow {
 
 
 	//https://medium.com/@angellopozo/ethereum-signing-and-validating-13a2d7cb0ee3
-	function isSigned(address _addr, bytes32 msgHash, uint8 v, bytes32 r, bytes32 s) private returns (bool) {
+	function isSigned(address _addr, bytes32 msgHash, uint8 v, bytes32 r, bytes32 s) pure private returns (bool) {
 		return ecrecover(msgHash, v, r, s) == _addr;
 	}
 
