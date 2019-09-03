@@ -106,18 +106,16 @@ contract Resolution is ConditionalEscrow {
 	}
 
 	// Use Escrow methods to return funds to depositor on request
-	function withdraw(string memory resolutionId, address payable withdrawalTarget, address validator) public {
+	function completeResolution(string memory resolutionId, address payable withdrawalTarget, address validator) public returns (address, address) {
 		require(withdrawalAllowed(validator));
 		require(resolutions[resolutionId].initialized == true);
 		withdraw(withdrawalTarget);
+		return (withdrawalTarget, validator);
 	}
 
-	// if validator sends signed message that terms are being met, lengthen period to escrow burn 
-	function restartTimer() private view {
-		require(msg.data.length != 0);
-		
-		// TODO: use block.number to identify time
-	}
+
+
+
 
 	function shouldBurn() private returns (bool) {
 	

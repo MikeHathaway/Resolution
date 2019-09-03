@@ -5,7 +5,7 @@ const fs = require('fs');
 function connectToContract(){
 	const provider = new ethers.providers.JsonRpcProvider()
 
-	const contractAddress = "0xB869DcA31a2817fa814B78c9c5cE6A52f6311782"
+	const contractAddress = "0x487E17E5D9469924c94176E18801Dc4d1113d7ED"
 
 	const contract = new ethers.Contract(contractAddress, resolutionABI.abi, provider);
 
@@ -14,10 +14,10 @@ function connectToContract(){
 	
 	const contractWithSigner = contract.connect(wallet);
 
-	async function callWithdraw(){
+	async function callCompleteResolution(){
 		try {
 
-			const tx = await contractWithSigner.withdraw(
+			const tx = await contractWithSigner.completeResolution(
 				"Dank", 
 				'0x0fdaf8757F74e5CAE7DcAd5c0A4A6c27f13eC7FF', 
 				'0x0fdaf8757F74e5CAE7DcAd5c0A4A6c27f13eC7FF' 
@@ -63,7 +63,7 @@ function connectToContract(){
 	
 	listenForWithdrawal();
 	listenForWithdrawalFailure();
-	callWithdraw();
+	callCompleteResolution();
 }
 
 
