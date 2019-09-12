@@ -1,13 +1,11 @@
 const ethers = require('ethers');
-const resolutionABI = require('../contractConfiguration/Resolution.json');
+const contractConfiguration = require('../contractConfiguration/Resolution.json');
 const fs = require('fs');
 
 function connectToContract(){
 	const provider = new ethers.providers.JsonRpcProvider()
 
-	const contractAddress = "0x487E17E5D9469924c94176E18801Dc4d1113d7ED"
-
-	const contract = new ethers.Contract(contractAddress, resolutionABI.abi, provider);
+	const contract = new ethers.Contract(contractConfiguration.address, contractConfiguration.abi, provider);
 
 	const privateKey = fs.readFileSync('./.key.txt', 'utf8').replace(/[\n\r]/g, ''); 
 	const wallet = new ethers.Wallet(privateKey, provider);
@@ -16,14 +14,6 @@ function connectToContract(){
 
 	async function callCreateResolution(){
 		try {
-
-			const resolutionParams = {
-				resolutionName: "Dank", 
-				resolutionId: "420", 
-				resolutionEscrow: '0x0fdaf8757F74e5CAE7DcAd5c0A4A6c27f13eC7FF', 
-				validator: '0x0fdaf8757F74e5CAE7DcAd5c0A4A6c27f13eC7FF', 
-				donationTarget: '0x0fdaf8757F74e5CAE7DcAd5c0A4A6c27f13eC7FF'
-			};
 
 			const tx = await contractWithSigner.createResolution(
 				"Dank", 

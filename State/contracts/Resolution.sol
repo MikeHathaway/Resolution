@@ -24,6 +24,12 @@ contract Resolution is ConditionalEscrow {
 		//mapping(uint256 => address) participants;
 	}
 
+	struct ResolutionEscrow {
+		string resolutionId;
+		address payable resolutionEscrow;
+		address payable donationationTarget;
+	}
+
 	mapping(string => Resolution) private resolutions;
 	bytes32[] public resolutionIndex;
 
@@ -96,6 +102,8 @@ contract Resolution is ConditionalEscrow {
 	// TODO: Check to see if validator signed off && time period has elapsed
 	// overrides withdrawalAllowed function in conditionalEscrow
 	function withdrawalAllowed(address validator) public view returns (bool) {
+		// check input address to see that address's Resolutions block number has elapsed
+
 		//if(msg.sender == validator) {
 			// check time elapsed
 		//	if(block.number <= endDate) {
@@ -109,7 +117,14 @@ contract Resolution is ConditionalEscrow {
 	function completeResolution(string memory resolutionId, address payable withdrawalTarget, address validator) public returns (address, address) {
 		require(withdrawalAllowed(validator));
 		require(resolutions[resolutionId].initialized == true);
+		// require(isSigned(msg.sender, msgHash, v, r, s));	
+
+		// each participant needs to call completeResolution seperately
+		// seperately trigger withdraw 
+		// each participants escrow address is seperate
 		withdraw(withdrawalTarget);
+		resolutions[resolutionId].initialized == false;
+	
 		return (withdrawalTarget, validator);
 	}
 
@@ -133,6 +148,6 @@ contract Resolution is ConditionalEscrow {
 
 	// fallback function to return sent eth back to sender minus gas
 	function () external payable {
-		msg.sender.transfer(msg.value);
+		msg.sender.call.value(msg.value)("");
 	} 
 }

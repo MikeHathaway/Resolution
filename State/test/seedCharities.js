@@ -4,3 +4,7 @@ const acceptedCharities = [];
 export default acceptedCharities;
 
 
+contract('Charities', () => {
+	assert.equal(true, true);
+})
+
