@@ -9,6 +9,9 @@ Start the Ganache local Blockchain with your mnemonic and compile contracts
 
 ## Contract Architecture
 
+Library interface for interacting with Smart Contract
+- Library/
+
 1) CreateResolution
 	- Creation of a new Resolution
 ```

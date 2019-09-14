@@ -15,14 +15,17 @@
   "license": "ISC",
   "dependencies": {
     "@aztec/protocol": "^0.8.1",
+    "circom": "0.0.31",
     "dotenv": "^8.0.0",
     "ethers": "^4.0.36",
     "fs": "0.0.1-security",
     "openzeppelin-solidity": "2.2.0",
+    "snarkjs": "^0.1.19",
     "tasit-sdk": "0.0.18",
     "truffle-hdwallet-provider": "^1.0.15"
   },
   "devDependencies": {
-    "bip39": "^3.0.2"
+    "bip39": "^3.0.2",
+    "typescript": "^3.6.3"
   }
 }

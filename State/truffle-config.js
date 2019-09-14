@@ -46,10 +46,10 @@ module.exports = {
     // options below to some value.
     //
     development: {
-    	host: "127.0.0.1",     // Localhost (default: none)
-    	port: 8545,            // Standard Ethereum port (default: none)
+      host: "127.0.0.1",     // Localhost (default: none)
+      port: 8545,            // Standard Ethereum port (default: none)
       network_id: "*",       // Any network (default: none)
-      from: "0x0fdaf8757F74e5CAE7DcAd5c0A4A6c27f13eC7FF",
+      from: "0xee2B38F6E539f0D58D8892c563aad05FD1489D6d",
       provider: () => new HDWalletProvider(mnemonic, "http://localhost:8545") // Metamask account 
     }
     

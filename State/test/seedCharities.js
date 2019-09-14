@@ -1,8 +1,7 @@
 //https://github.com/porobov/charities-accepting-ether
-const acceptedCharities = [];
-
-export default acceptedCharities;
-
+const acceptedCharities = [
+	''
+];
 
 contract('Charities', () => {
 	assert.equal(true, true);

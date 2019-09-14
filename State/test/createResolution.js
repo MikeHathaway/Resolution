@@ -1,8 +1,12 @@
 const ethers = require('ethers');
 const contractConfiguration = require('../contractConfiguration/Resolution.json');
 const fs = require('fs');
+const connectToContract = require('../library/connectContract.js');
 
-function connectToContract(){
+
+// Create observable from contract connection -> listeners init -> callCreateResolution
+
+function connectContract(){
 	const provider = new ethers.providers.JsonRpcProvider()
 
 	const contract = new ethers.Contract(contractConfiguration.address, contractConfiguration.abi, provider);
@@ -11,6 +15,8 @@ function connectToContract(){
 	const wallet = new ethers.Wallet(privateKey, provider);
 	
 	const contractWithSigner = contract.connect(wallet);
+
+	const depositedAmount = 100000;
 
 	async function callCreateResolution(){
 		try {
@@ -21,12 +27,13 @@ function connectToContract(){
 				'0x0fdaf8757F74e5CAE7DcAd5c0A4A6c27f13eC7FF', 
 				'0x0fdaf8757F74e5CAE7DcAd5c0A4A6c27f13eC7FF', 
 				'0x0fdaf8757F74e5CAE7DcAd5c0A4A6c27f13eC7FF',
-				{value: 100000}
+				{value: depositedAmount}
 			);
 
 			tx.wait().then(receipt => {
 				console.log("Transaction Receipt", receipt);
 			});
+
 		} catch(error) {
 			console.error("ruh ro", error);
 			throw error;
@@ -37,9 +44,13 @@ function connectToContract(){
 	async function listenForDeposit(){
 		try {
 			contract.on('Deposited', (payee, weiAmount, event) => {			
+				
 				console.log("DEPOSITED: ");
 				console.log("Payee: ", payee);
 				console.log("Amount: ", weiAmount.toNumber());
+
+				assert.equal(depositedAmount, weiAmount.toNumber());
+
 			})
 		} catch(error) {
 			console.error("listen error", error);
@@ -82,5 +93,4 @@ function connectToContract(){
 	callCreateResolution();
 }
 
-
-connectToContract();
+connectContract();

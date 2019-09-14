@@ -5,7 +5,7 @@ const fs = require('fs');
 function connectToContract(){
 	const provider = new ethers.providers.JsonRpcProvider()
 
-	const contract = new ethers.Contract(contractConfiguration.address, resolutionABI.abi, provider);
+	const contract = new ethers.Contract(contractConfiguration.address, contractConfiguration.abi, provider);
 
 	const privateKey = fs.readFileSync('./.key.txt', 'utf8').replace(/[\n\r]/g, ''); 
 	const wallet = new ethers.Wallet(privateKey, provider);
@@ -24,6 +24,7 @@ function connectToContract(){
 			tx.wait().then(receipt => {
 				console.log("Transaction Receipt", receipt);
 			});
+
 		} catch(error) {
 			console.error("ruh ro", error);
 			throw error;
