@@ -7,3 +7,4 @@ package-lock.json
 View/
 contractConfiguration/
 .key.txt
+**/types/*

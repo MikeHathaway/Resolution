@@ -38,7 +38,8 @@ Library interface for interacting with Smart Contract
 2) CompleteResolution
 	- Goal is met, all withdrawal conditions present
 		- Both participants send signed message signaling success
-		
+			- https://docs.ethers.io/ethers.js/html/cookbook-signing.html#signing-a-string-message
+
 3) FailResolution
 	- Goal is unmet, and/or no signature recieved before endDate
 	- Aion SC funded on Resolution creation used to dispatch funds
@@ -51,3 +52,4 @@ Library interface for interacting with Smart Contract
 - https://medium.com/aztec-protocol/deploying-aztec-to-ganache-dc02d538b24f
 - https://medium.com/@kctheservant/transactions-in-ethereum-e85a73068f74
 - https://github.com/ETH-Pantheon/Aion
+- https://github.com/ethereum-ts/TypeChain

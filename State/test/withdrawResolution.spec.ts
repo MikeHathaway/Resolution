@@ -1,6 +1,10 @@
-const ethers = require('ethers');
-const contractConfiguration = require('../contractConfiguration/Resolution.json');
 const fs = require('fs');
+const ethers = require('ethers');
+
+import mocha from 'mocha';
+import assert from 'assert';
+
+const contractConfiguration = require('../contractConfiguration/Resolution.json');
 
 function connectToContract(){
 	const provider = new ethers.providers.JsonRpcProvider()

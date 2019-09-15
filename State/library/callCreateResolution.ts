@@ -1,9 +1,8 @@
 import connectToContract from '../library/connectContract';
 
-export default async function callCreateResolution(resolutionName, resolutionId = Math.floor(Math.random()*1000).toString()){
+export default async function callCreateResolution(resolutionName: string, depositedAmount: number, resolutionId = Math.floor(Math.random()*1000).toString()){
 
 	const contractWithSigner = connectToContract();
-	const depositedAmount = 100000;
 
 	try {
 			const tx = await contractWithSigner.createResolution(

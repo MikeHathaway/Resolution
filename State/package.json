@@ -7,9 +7,10 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "./node_modules/.bin/mocha -r ts-node/register ./test/*.spec.ts",
     "start": "bash ./start.sh false",
-    "start-init": "bash ./start.sh true"
+    "start-init": "bash ./start.sh true",
+    "type-compile": "typechain --target=ethers \"build/cojntracts/*.json\" "
   },
   "author": "",
   "license": "ISC",
@@ -19,13 +20,17 @@
     "dotenv": "^8.0.0",
     "ethers": "^4.0.36",
     "fs": "0.0.1-security",
+    "ganache-cli": "^6.7.0",
     "openzeppelin-solidity": "2.2.0",
     "snarkjs": "^0.1.19",
-    "tasit-sdk": "0.0.18",
     "truffle-hdwallet-provider": "^1.0.15"
   },
   "devDependencies": {
+    "@types/mocha": "^5.2.7",
     "bip39": "^3.0.2",
+    "mocha": "^6.2.0",
+    "ts-node": "^8.3.0",
+    "typechain": "^0.3.21",
     "typescript": "^3.6.3"
   }
 }
