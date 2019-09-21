@@ -2,6 +2,9 @@ const ethers = require('ethers');
 const contractConfiguration = require('../contractConfiguration/Resolution.json');
 const fs = require('fs');
 
+
+// TODO: add connect wrapper 
+
 export default function connectToContract(){
 	const provider = new ethers.providers.JsonRpcProvider()
 
@@ -15,3 +18,7 @@ export default function connectToContract(){
 	return contractWithSigner;
 }
 
+
+export async function connectMethod(method: Function) {
+	return await connectToContract(method);
+}

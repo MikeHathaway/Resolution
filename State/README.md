@@ -1,39 +1,25 @@
 # Resolution
 
-Resolution is a Decentralized Application (dApp) that allows you to set goals, and stake value on that goals completion.
+Resolution is a Decentralized Application (dApp) that allows you to set goals (Resolution), and stake value on that Resolution's completion.
+
 
 
 ## Description 
 
-MOTIVATION
+*Why do this? Why not just do the thing?*
 
-Why do this? Why not just do the thing?
+Some research[1](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2600530/)[2](https://www.behavioraleconomics.com/resources/mini-encyclopedia-of-be/loss-aversion/) shows that loss avoidance can be strongly motivating factor in determining behavior. Resolution brings Avoidance Motivation to the Blockchain by providing a Smart Contract you can use to easily "put your money where your mouth is" and stake funds on succesful completion of your next New Years Resolution. 
 
-Well, it turns out some research[1]()[2]()[3]() shows that loss avoidance can be strongly motivating factor in determining behavior. This may or may not be news.
+*So you've decided to hack yourself, and are now wondering how it works.*
 
-
-HOW IT WORKS
-
-So you've decided to hack yourself, and are now wondering how it works. 
-
-On creation of your goal, you will specify a charity that will receive your funds in the event that you fail to complete your Resolution, along with a set duration (specified in Ethereum Blocks), and a specified amount of Ethereum (` <1 ether` that you are will to stake on successful completion. Those funds will then be held in escrow, at the control of the [ResolutionDao](https://aragon.org/#/). [The terms of this escrow will be determined by OpenLaw]() This DAO's keys have in turn been burned, eliminating the possibility of malicious developers. Likewise, in order to prevent money laundering, all charities are on a immutable list of addresses controlled by a subsidiary Charity Smart Contract. 
+On creation of your Resolution, you will specify a charity that will receive your funds in the event that you fail to complete your Resolution, along with a set duration (specified in Ethereum Blocks), and a specified amount of Ethereum (`<1 ether`) to stake on successful completion. Those funds will then be held in escrow, at the control of the [ResolutionDao](https://wiki.aragon.org/archive/dev/apps/finance/). [In a future release, the terms of this escrow will be determined by OpenLaw](https://www.openlaw.io/) This DAO's keys have in turn been burned, eliminating the possibility of malicious developers. Likewise, in order to prevent money laundering, all charities are on a immutable list of verified charity addresses controlled by a subsidiary Charity Smart Contract. 
 
 Once Ethereum reaches the specified block height, you will then be able to send a message in a withdrawal transaction to the Resolution Smart Contract. Optionally, you can also specify a validating address, with the added requirement that the validating address signs off on successful completion of the Resolution in order for withdrawal from the ResolutionDAO to occur.
 
+In the event that you fail to complete the Resolution you can either send a transaction causing the staked funds to be transferred to your chosen charity, or wait until the post expiration buffer period expires. On expiration of the buffer period, Resolution's integration with [Aion](https://github.com/ETH-Pantheon/Aion) kicks in and uses a portion of the staked funds to trigger the transfer to charity.
 
-In the event that you fail to complete the Resolution you can either send a transaction causing 
+By default, Resolution relies on the honor system. The [Oracle Problem](https://hackernoon.com/a-discussion-of-the-oracle-problem-6cbec7872c10) restricts our ability to access real world data, and trustlessly verify your actions. Not to mention it might get creepy having a smart contract watch you in the shower. A brief pledge and recognition that the funds were supposed to have gone to charity should help provide some incentives to not cheat yourself, or others. 
 
-This is because Ethereum Smart Contracts are not, bar using something like Aion[](), self executing. Someone needs to call it for a state change to take place. 
-
-By default, Resolution relies on the honor system. The oracle problem restricts our ability to access real world data, and trustlessly verify your actions. Not to mention it might get creepy having a smart contract watch you in the shower. A brief pledge and recognition that the funds were supposed to have gone to charity should help provide some game theoretic stability. 
-
-
-
-WHY USE ETHEREUM
-
-Ethereum is a groundbreaking innovation - a global computation public commons that can be used to build [Unstoppable Applications](https://hackernoon.com/joe-lubin-on-the-future-of-blockchain-d058aa57641b)
-
-It also removes some regulatory uncertainty,
 
 
 ### Getting Started
@@ -46,11 +32,13 @@ With initialization complete, you can return to the project by simply running `n
 
 You should now have a local Ganache Ethereum node, with your smart contracts compiled and deployed to it.
 
+
+
 ### Architecture
 
 Resolution is a Web based dApp, consisting of a client (coded in JS and served up by IPFS), and the Ethereum Blockchain. People would then interact with that client via Metamask, or another web3 wallet that can sign and receive transactions. 
 
-Resolution strives to be as secure, and lightweight as possible - reflective of the gravity of holding peoples money. Dependencies are chosen for their small size, and minimal attack surface. For example, Ethers.js (~84kb) is used as opposed to the relatively bloated Web3 library for client interactions with the contract.  
+Resolution strives to be as secure, and lightweight as possible - reflective of the gravity of holding peoples money. Dependencies are chosen for their small size, and minimal attack surface. For example, Ethers.js (~84kb) is used as opposed to the comparatively bloated Web3 library for client interactions with the contract. 
 
 
 State/
@@ -71,8 +59,7 @@ Project Structure
 		
 Public Contract Functions (contracts/):
 
-1) CreateResolution
-	- Creation of a new Resolution
+1) *CreateResolution*
 ```
 	/**
 		* Create a new Resolution
@@ -106,7 +93,7 @@ Public Contract Functions (contracts/):
 	- Goal is unmet, and/or no signature recieved before endDate
 	- Aion SC funded on Resolution creation used to dispatch funds
 	- If you are lazy, and don't call CompleteResolution by the time periods end plus a buffer. Don't be lazy.	
-	- Termiantion of resolution can then be called openly
+	- Alternative: Termiantion of resolution can then be called openly
 
 
 ### Read More
@@ -118,3 +105,5 @@ Public Contract Functions (contracts/):
 - https://github.com/ETH-Pantheon/Aion
 - https://github.com/ethereum-ts/TypeChain
 - https://github.com/matiassingers/awesome-readme
+- https://hack.aragon.org/docs/guides-use-agent	
+- https://www.stickk.com/
