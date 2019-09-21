@@ -8,3 +8,4 @@ View/
 contractConfiguration/
 .key.txt
 **/types/*
+*.swo

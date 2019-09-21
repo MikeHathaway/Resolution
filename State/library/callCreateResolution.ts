@@ -15,7 +15,7 @@ export default async function callCreateResolution(resolutionName: string, depos
 			);
 
 			tx.wait().then(receipt => {
-				console.log("Transaction Receipt", receipt);
+				//				console.log("Transaction Receipt", receipt);
 			});
 
 		} catch(error) {

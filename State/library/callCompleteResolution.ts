@@ -12,7 +12,7 @@ export default async function callCompleteResolution(resolutionName: string){
 		);
 
 		tx.wait().then(receipt => {
-			console.log("Transaction Receipt", receipt);
+			//			console.log("Transaction Receipt", receipt);
 		});
 
 	} catch(error) {

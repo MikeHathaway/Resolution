@@ -7,34 +7,6 @@ import callCreateResolution from '../library/callCreateResolution';
 
 //https://github.com/ethereum-ts/TypeChain/blob/master/test/integration/targets/ethers/DumbContract.spec.ts
 
-	async function listenForCreateResolution(){
-		try {
-			let contract;		
-			contract.on('ResolutionCreated', (resolutionName, resolutionId, event) => {			
-				console.log("==================");
-				console.log("RESOLUTION CREATED: ");
-				console.log("resolutionName: ", resolutionName);
-				console.log("blockNumber: ", event.blockNumber);
-			})
-		} catch(error) {
-			console.error("listen error", error);
-			throw error;	
-		}
-	}
-
-	async function listenForCreateFailure(){
-		try {
-			let contract;		
-			contract.on('RejectCreate', (caller, resolutionId, event) => {			
-				console.log("Create Resolution was rejected");
-				console.log(caller);
-				console.log(event.blockNumber);
-			})
-		} catch(error) {
-			console.error("listen error", error);
-			throw error;	
-		}
-	}
 
 describe('Events', async function() {
 	it('triggers a Deposited event', async function() {
@@ -48,7 +20,8 @@ describe('Events', async function() {
 				contract.on('Deposited', (payee, weiAmount, event) => {			
 					
 					event.removeListener();
-		
+
+
 					console.log("DEPOSITED: ");
 					console.log("Payee: ", payee);
 		//			console.log("Amount: ", weiAmount.toNumber());

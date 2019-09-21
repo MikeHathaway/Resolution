@@ -140,7 +140,7 @@ contract Resolution is ConditionalEscrow {
 	function burnValue(address payable donationTarget, uint256 wageredAmount) public returns (bool) {
 		require(shouldBurn());		
 		// log burn to blockchain for display to clients (TODO: Parameterize event fields)
-		emit Burn(123, 0x0fdaf8757F74e5CAE7DcAd5c0A4A6c27f13eC7FF);	
+		emit Burn(123, donationTarget);	
 	
 		// send to donation target
 		return donationTarget.send(wageredAmount);
