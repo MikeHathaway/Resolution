@@ -111,7 +111,7 @@ A library module is used to centralize the set of functions that will be execute
 		* @param resolutionCreator owner address of resolution being burned 
  		* @return bool
 	*/
-	function burnValue(string memory resolutionId, address payable donationTarget, address resolutionCreator) public returns (bool) {
+	function burnResolution(string memory resolutionId, address payable donationTarget, address resolutionCreator) public returns (bool) {
 		require(shouldBurn(resolutionCreator, resolutionId));		
 		// log burn to blockchain for display to clients (TODO: Parameterize event fields)
 		emit Burn(resolutions[resolutionCreator][resolutionId].value, donationTarget);	

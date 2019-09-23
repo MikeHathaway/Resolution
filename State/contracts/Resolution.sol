@@ -14,7 +14,7 @@ contract Resolution is ConditionalEscrow {
 		bool initialized;		
 		bool usesValidator;
 
-		// allow a given resolutionCreator to have many resolutionIds
+		// allow a creator to have multiple resolutions with or without validators
 		mapping(string => address) validator; // resolutionId => validatorAddress
 	}
 	
@@ -35,14 +35,14 @@ contract Resolution is ConditionalEscrow {
 	}
 
 	function shouldCreate(address resolutionCreator, string memory resolutionId) private returns (bool) {
-    	if(resolutions[resolutionCreator][resolutionId].initialized) {
-        	emit RejectCreate(msg.sender, resolutionId, "Resolution with this resolutionId already exists.");
-        	return false;
-      	}
+		if(resolutions[resolutionCreator][resolutionId].initialized) {
+			emit RejectCreate(msg.sender, resolutionId, "Resolution with this resolutionId already exists.");
+			return false;
+		}
 
 		// Prevent creations greater than predefined limit
 		if(msg.value > 1 ether){
-        	emit RejectCreate(msg.sender, resolutionId, "Wagered amount too large");
+			emit RejectCreate(msg.sender, resolutionId, "Wagered amount too large");
 			return false;
 		}
 
@@ -127,9 +127,9 @@ contract Resolution is ConditionalEscrow {
 
 	function shouldBurn(address resolutionCreator, string memory resolutionId) private returns (bool) {
 		// Resolution already burned or completed
-    	if(!resolutions[resolutionCreator][resolutionId].initialized) {
-        	return false;
-      	}
+		if(!resolutions[resolutionCreator][resolutionId].initialized) {
+			return false;
+		}
 
 		if(now < resolutions[resolutionCreator][resolutionId].duration) {
 			return false;
@@ -145,7 +145,7 @@ contract Resolution is ConditionalEscrow {
 		* @param resolutionCreator owner address of resolution being burned 
  		* @return bool
 	*/
-	function burnValue(string memory resolutionId, address payable donationTarget, address resolutionCreator) public returns (bool) {
+	function burnResolution(string memory resolutionId, address payable donationTarget, address resolutionCreator) public returns (bool) {
 		require(shouldBurn(resolutionCreator, resolutionId));		
 		// log burn to blockchain for display to clients (TODO: Parameterize event fields)
 		emit Burn(resolutions[resolutionCreator][resolutionId].value, donationTarget);	
