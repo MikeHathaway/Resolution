@@ -16,11 +16,8 @@
   "license": "ISC",
   "dependencies": {
     "circom": "0.0.31",
-    "dotenv": "^8.0.0",
     "ethers": "^4.0.36",
     "fs": "0.0.1-security",
-    "ganache-cli": "^6.7.0",
-    "openzeppelin-solidity": "2.2.0",
     "snarkjs": "^0.1.19",
     "truffle-hdwallet-provider": "^1.0.15"
   },

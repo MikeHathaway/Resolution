@@ -5,7 +5,7 @@ set -eu
 new=$1
 
 if [ "$new" = "true" ]; then
-	node ./start.js
+	node ./createSecret.js
 	
 	npm i -g ganache-cli
 fi

@@ -1,0 +1,10 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"types": ["node"],
+		"lib": ["es6"],
+		"outDir": "build",
+		"esModuleInterop": true
+	}
+}
+

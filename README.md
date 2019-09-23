@@ -6,13 +6,9 @@ Resolution is a Decentralized Application (dApp) that allows you to set goals (R
 
 ## Description 
 
-*Why do this? Why not just do the thing?*
+Some research([1](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2600530/), [2](https://www.behavioraleconomics.com/resources/mini-encyclopedia-of-be/loss-aversion/)) shows that loss avoidance can be strongly motivating factor in determining behavior. Resolution brings Avoidance Motivation to the Blockchain by providing a Smart Contract you can use to easily "put your money where your mouth is" and stake funds on succesful completion of your next New Years Resolution. 
 
-Some research[1](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2600530/)[2](https://www.behavioraleconomics.com/resources/mini-encyclopedia-of-be/loss-aversion/) shows that loss avoidance can be strongly motivating factor in determining behavior. Resolution brings Avoidance Motivation to the Blockchain by providing a Smart Contract you can use to easily "put your money where your mouth is" and stake funds on succesful completion of your next New Years Resolution. 
-
-*So you've decided to hack yourself, and are now wondering how it works.*
-
-On creation of your Resolution, you will specify a charity that will receive your funds in the event that you fail to complete your Resolution, along with a set duration (specified in Ethereum Blocks), and a specified amount of Ethereum (`<1 ether`) to stake on successful completion. Those funds will then be held in escrow, at the control of the [ResolutionDao](https://wiki.aragon.org/archive/dev/apps/finance/). [In a future release, the terms of this escrow will be determined by OpenLaw](https://www.openlaw.io/) This DAO's keys have in turn been burned, eliminating the possibility of malicious developers. Likewise, in order to prevent money laundering, all charities are on a immutable list of verified charity addresses controlled by a subsidiary Charity Smart Contract. 
+In order to create a Resolution, you will need to specify a charity that will receive your funds in the event that you fail to complete your Resolution, along with a set duration (specified in Ethereum Blocks), and a specified amount of Ethereum (`<1 ether`) to stake on successful completion. Those funds will then be held in escrow, at the control of the [ResolutionDao](https://wiki.aragon.org/archive/dev/apps/finance/). [In a future release, the terms of this escrow will be determined by OpenLaw](https://www.openlaw.io/). This DAO's keys have in turn been burned, eliminating the possibility of malicious developers. Likewise, in order to prevent money laundering, all charities are on a immutable list of verified charity addresses controlled by a subsidiary Charity Smart Contract. 
 
 Once Ethereum reaches the specified block height, you will then be able to send a message in a withdrawal transaction to the Resolution Smart Contract. Optionally, you can also specify a validating address, with the added requirement that the validating address signs off on successful completion of the Resolution in order for withdrawal from the ResolutionDAO to occur.
 
@@ -36,28 +32,28 @@ You should now have a local Ganache Ethereum node, with your smart contracts com
 
 ### Architecture
 
+**Overview**
+
 Resolution is a Web based dApp, consisting of a client (coded in JS and served up by IPFS), and the Ethereum Blockchain. People would then interact with that client via Metamask, or another web3 wallet that can sign and receive transactions. 
 
 Resolution strives to be as secure, and lightweight as possible - reflective of the gravity of holding peoples money. Dependencies are chosen for their small size, and minimal attack surface. For example, Ethers.js (~84kb) is used as opposed to the comparatively bloated Web3 library for client interactions with the contract. 
 
 
-State/
-Library/
-View/
-
-Project Structure
-
+**Project Structure**
+- State/
+	- contracts/
+		- Solidity Smart Contracts
+	- migrations/
+		- JavaScript code for deploying contracts to the blockchain
+	- tests/
+		- Tests using Mocha, Chai, and mocked contracts
 - Library/
 	- NodeJS Typescript library interface for interacting with Smart Contract
-- contracts/
-	- Solidity Smart Contracts
-- migrations/
-	- JavaScript code for deploying contracts to the blockchain
-- tests/
-	- Tests using Mocha, Chai, and mocked contracts
+- View/
+	- UI code
 
 		
-Public Contract Functions (contracts/):
+**Public Contract Functions (contracts/):**
 
 1) *CreateResolution*
 ```
@@ -97,13 +93,21 @@ Public Contract Functions (contracts/):
 
 
 ### Read More
+
+**Smart Contract Interations** 
+- https://github.com/ethereum-ts/TypeChain
+- https://github.com/ETH-Pantheon/Aion
+- https://hack.aragon.org/docs/guides-use-agent	
+
+**Smart Contract Creation**
 - https://docs.openzeppelin.com/sdk/2.5/pattern.html
 - https://dzone.com/articles/implementing-a-simple-smart-contract-for-asset-tra
 - https://ethereum.stackexchange.com/questions/8615/child-contract-vs-struct?rq=1
 - https://medium.com/aztec-protocol/deploying-aztec-to-ganache-dc02d538b24f
 - https://medium.com/@kctheservant/transactions-in-ethereum-e85a73068f74
-- https://github.com/ETH-Pantheon/Aion
-- https://github.com/ethereum-ts/TypeChain
-- https://github.com/matiassingers/awesome-readme
-- https://hack.aragon.org/docs/guides-use-agent	
+- https://medium.freecodecamp.org/create-an-ethereum-token-using-open-source-contracts-open-zeppelin-1e132e6233ed
+- https://blog.zeppelin.solutions/a-gentle-introduction-to-ethereum-programming-part-3-abdd9644d0c2
+- https://github.com/ethereum/wiki/wiki/JavaScript-API#contract-events
+
+**Market Research**
 - https://www.stickk.com/
