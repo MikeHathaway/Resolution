@@ -1,4 +1,4 @@
-import connectToContract  from "../library/connectContract";
+import connectToContract  from "./connectContract";
 
 export async function listenForCreateResolution(){
 	try {

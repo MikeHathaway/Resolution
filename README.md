@@ -12,7 +12,7 @@ In order to create a Resolution, you will need to specify a charity that will re
 
 Once Ethereum reaches the specified block height, you will then be able to send a message in a withdrawal transaction to the Resolution Smart Contract. Optionally, you can also specify a validating address, with the added requirement that the validating address signs off on successful completion of the Resolution in order for withdrawal from the ResolutionDAO to occur.
 
-In the event that you fail to complete the Resolution you can either send a transaction causing the staked funds to be transferred to your chosen charity, or wait until the post expiration buffer period expires. On expiration of the buffer period, Resolution's integration with [Aion](https://github.com/ETH-Pantheon/Aion) kicks in and uses a portion of the staked funds to trigger the transfer to charity.
+In the event that you fail to complete the Resolution you can either send a transaction causing the staked funds to be transferred to your chosen charity, or wait until the post expiration buffer period expires. On expiration of the buffer period, either someone calls the burnValue method, or Resolution's integration with [Aion](https://github.com/ETH-Pantheon/Aion) kicks in and uses a portion of the staked funds to trigger the transfer to charity.
 
 By default, Resolution relies on the honor system. The [Oracle Problem](https://hackernoon.com/a-discussion-of-the-oracle-problem-6cbec7872c10) restricts our ability to access real world data, and trustlessly verify your actions. Not to mention it might get creepy having a smart contract watch you in the shower. A brief pledge and recognition that the funds were supposed to have gone to charity should help provide some incentives to not cheat yourself, or others. 
 
@@ -38,6 +38,7 @@ Resolution is a Web based dApp, consisting of a client (coded in JS and served u
 
 Resolution strives to be as secure, and lightweight as possible - reflective of the gravity of holding peoples money. Dependencies are chosen for their small size, and minimal attack surface. For example, Ethers.js (~84kb) is used as opposed to the comparatively bloated Web3 library for client interactions with the contract. 
 
+A library module is used to centralize the set of functions that will be executed in the dApp. This single source of truth will ensure that tests are running against the same functions that will be executed on Mainnet. 
 
 **Project Structure**
 - State/
@@ -53,7 +54,7 @@ Resolution strives to be as secure, and lightweight as possible - reflective of 
 	- UI code
 
 		
-**Public Contract Functions (contracts/):**
+**Public Contract Functions (State/contracts/):**
 
 1) *CreateResolution*
 ```
@@ -77,20 +78,51 @@ Resolution strives to be as secure, and lightweight as possible - reflective of 
 	}
 ```
 	
-2) CompleteResolution
-	- Goal is met, all withdrawal conditions present
-		- Both participants send signed message verifying successful completion of the Resolution.
-			- https://docs.ethers.io/ethers.js/html/cookbook-signing.html#signing-a-string-message
+2) *CompleteResolution*
+```
+	/**
+		* Use Escrow methods to return funds to depositor on request
+	   	* @param resolutionId Id of resolution being burned 
+	   	* @param withdrawalTarget address which will receive the wageredAmount 
+ 		* @return bool
+	*/
+	function completeResolution(string memory resolutionId, address payable withdrawalTarget) public returns (address) {
+		require(withdrawalAllowed(msg.sender));
+		require(resolutions[msg.sender][resolutionId].initialized == true);
+
+		if(resolutions[msg.sender][resolutionId].usesValidator == true) {
+			// require(isSigned(validator, msgHash, v, r, s));	
+		}
+
+		withdraw(withdrawalTarget);
+		resolutions[msg.sender][resolutionId].initialized == false;
+		return (withdrawalTarget);
+	}
+```
 
 
 
+3) *BurnResolution*
+```
+	/**
+		* if amounts haven't been withdrawn by set date, make method callable for burning 
+	   	* @param resolutionId Id of resolution being burned 
+	   	* @param donationTarget Charity address which will receive the wageredAmount 
+		* @param resolutionCreator owner address of resolution being burned 
+ 		* @return bool
+	*/
+	function burnValue(string memory resolutionId, address payable donationTarget, address resolutionCreator) public returns (bool) {
+		require(shouldBurn(resolutionCreator, resolutionId));		
+		// log burn to blockchain for display to clients (TODO: Parameterize event fields)
+		emit Burn(resolutions[resolutionCreator][resolutionId].value, donationTarget);	
+	
+		resolutions[resolutionCreator][resolutionId].initialized == false;
 
-3) FailResolution
-	- Goal is unmet, and/or no signature recieved before endDate
-	- Aion SC funded on Resolution creation used to dispatch funds
-	- If you are lazy, and don't call CompleteResolution by the time periods end plus a buffer. Don't be lazy.	
-	- Alternative: Termiantion of resolution can then be called openly
-
+		// TODO: account for gas
+		// send to donation target
+		return donationTarget.send(resolutions[resolutionCreator][resolutionId].value);
+	}
+```
 
 ### Read More
 
@@ -98,9 +130,11 @@ Resolution strives to be as secure, and lightweight as possible - reflective of 
 - https://github.com/ethereum-ts/TypeChain
 - https://github.com/ETH-Pantheon/Aion
 - https://hack.aragon.org/docs/guides-use-agent	
+- https://docs.ethers.io/ethers.js/html/cookbook-signing.html#signing-a-string-message
 
 **Smart Contract Creation**
 - https://docs.openzeppelin.com/sdk/2.5/pattern.html
+- https://ethereum.stackexchange.com/questions/12611/solidity-filling-a-struct-array-containing-itself-an-array	
 - https://dzone.com/articles/implementing-a-simple-smart-contract-for-asset-tra
 - https://ethereum.stackexchange.com/questions/8615/child-contract-vs-struct?rq=1
 - https://medium.com/aztec-protocol/deploying-aztec-to-ganache-dc02d538b24f

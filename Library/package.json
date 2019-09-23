@@ -1,7 +1,7 @@
 {
-  "name": "state",
+  "name": "Library",
   "version": "1.0.0",
-  "description": "",
+  "description": "library functions for interacting with Resolution contracts",
   "main": "truffle-config.js",
   "directories": {
     "test": "test"
