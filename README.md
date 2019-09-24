@@ -22,7 +22,7 @@ By default, Resolution relies on the honor system. The [Oracle Problem](https://
 
 Building this project requires NodeJS. 
 
-The first time you run this project, run `npm run start-init`. Thereaftore, you will have a consistent mnemonic stored in a .gitignored file. Storing private keys in memory, in unecrypted locations on internet connected devices constitutes poor security, and should only be done with throwaway development keys. With the outputted list of private keys and addresses, copy the private key to a file .key.txt, and replace the code block in truffle-config.js with the associated address.
+The first time you run this project, run `npm run start-init`. Thereaftore, you will have a consistent mnemonic stored in a .gitignored file. Storing private keys in memory, in unecrypted locations on internet connected devices constitutes poor security, and should only be done with throwaway development keys.
 
 With initialization complete, you can return to the project by simply running `npm run start`. 
 
