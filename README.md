@@ -62,19 +62,31 @@ A library module is used to centralize the set of functions that will be execute
 		* Create a new Resolution
 	   	* @param resolutionName Name of Resolution 
 		* @param resolutionId UUID 
-	   	* @param resolutionEscrow address holding the resolutionFund
-	   	* @param validator address who vouches for Resolution
 		* @param donationTarget address who receives escrowed funds in the event of failure
- 		* @return void 
+		* @param usesValidator  boolean to check if a validatable resolution is being created
+ 		* @return resolutionId UUID 
 	*/
-	function createResolution(string memory resolutionName, string memory resolutionId, address payable resolutionEscrow, address validator, address payable donationTarget) public payable {
-		require(shouldCreate(resolutionId));
 
+	function createResolution(string memory resolutionName, string memory resolutionId,  uint256 duration, address payable donationTarget, bool usesValidator, address validator) public payable returns (string memory) {
+		require(shouldCreate(msg.sender, resolutionId));
+
+		// validated resolution
+		if(usesValidator){ 
+			resolutions[msg.sender][resolutionId] = Resolution(resolutionName, msg.value, duration, donationTarget, true, true);
+
+			deposit(resolutionEscrow);	
+
+			emit ResolutionCreated(resolutionName, msg.sender, resolutionId, msg.value);
+			return resolutionId;
+		}
+		
+		// self signed resolution
+		resolutions[msg.sender][resolutionId] = Resolution(resolutionName, msg.value, duration, donationTarget, true, false);
+	
 		deposit(resolutionEscrow);	
-	
-		resolutions[resolutionId] = Resolution(resolutionName, resolutionId, msg.value, resolutionEscrow, validator, donationTarget, true);
-	
-		emit ResolutionCreated(resolutionName, resolutionId, msg.value);
+
+		emit ResolutionCreated(resolutionName, msg.sender, resolutionId, msg.value);
+		return resolutionId;
 	}
 ```
 	
