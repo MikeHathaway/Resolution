@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "target": "es2017",
+        "lib": ["dom"],
+        "strict": true,
+        "sourceMap": true,
+        "noEmitOnError": true,
+        "baseUrl": ".",
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "outDir": "out",
+        "jsx": "react",
+        "types": ["react"] 
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts"
+    ]
+}
