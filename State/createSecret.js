@@ -4,7 +4,7 @@ const ethers = require('ethers');
 
 const mnemonic = bip39.generateMnemonic();
 
-// retreive 1st path private key and address
+// TODO: retreive 1st path private key and address
 const Wallet = ethers.Wallet.fromMnemonic(mnemonic);
 const privateKey = Wallet.privateKey;
 const address = Wallet.address;
