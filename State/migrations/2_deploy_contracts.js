@@ -3,7 +3,7 @@ const Resolution = artifacts.require('./Resolution.sol');
 const fileContent = require('../build/contracts/Resolution.json');
 
 module.exports = function(deployer) {
-    deployer.deploy(Resolution)
+    deployer.deploy(Resolution, fs.readFileSync(".address").toString().trim())
 		.then(() => {
 		    const contractConfiguration = {
 		        abi: fileContent.abi,

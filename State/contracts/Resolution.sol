@@ -13,13 +13,17 @@ contract Resolution is ConditionalEscrow {
 		address payable donationTarget;	
 		bool initialized;		
 		bool usesValidator;
+	}
 
-		// allow a creator to have multiple resolutions with or without validators
-		mapping(string => address) validator; // resolutionId => validatorAddress
+	struct Validator {
+		address validator;
+		bool hasSigned;
 	}
 	
 	// resolutionCreator => resolutionId => Resolution
 	mapping(address => mapping(string => Resolution)) private resolutions; 
+	// resolutionId => Validator
+	mapping(string => Validator) private validators;
 
 	event ResolutionCreated(string resolutionName, address resolutionCreator, string resolutionId, uint256 resolutionValue);
 	event RejectCreate(address callingAccount, string uuid, string message);
@@ -64,6 +68,7 @@ contract Resolution is ConditionalEscrow {
 		// validated resolution
 		if(usesValidator){ 
 			resolutions[msg.sender][resolutionId] = Resolution(resolutionName, msg.value, duration, donationTarget, true, true);
+			validators[resolutionId] = Validator(validator, false);
 
 			deposit(resolutionEscrow);	
 
@@ -113,7 +118,8 @@ contract Resolution is ConditionalEscrow {
 		require(resolutions[msg.sender][resolutionId].initialized == true);
 
 		if(resolutions[msg.sender][resolutionId].usesValidator == true) {
-			// require(isSigned(validator, msgHash, v, r, s));	
+			//require(isSigned(validators[resolutionId].validator, msgHash, v, r, s));	
+			validators[resolutionId].hasSigned = true;
 		}
 
 		withdraw(withdrawalTarget);
@@ -125,7 +131,7 @@ contract Resolution is ConditionalEscrow {
 
 
 
-	function shouldBurn(address resolutionCreator, string memory resolutionId) private returns (bool) {
+	function shouldBurn(address resolutionCreator, string memory resolutionId) private view returns (bool) {
 		// Resolution already burned or completed
 		if(!resolutions[resolutionCreator][resolutionId].initialized) {
 			return false;

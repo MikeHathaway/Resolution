@@ -4,7 +4,6 @@ const ethers = require('ethers');
 
 const mnemonic = bip39.generateMnemonic();
 
-// TODO: retreive 1st path private key and address
 const Wallet = ethers.Wallet.fromMnemonic(mnemonic);
 const privateKey = Wallet.privateKey;
 const address = Wallet.address;
@@ -30,5 +29,5 @@ fs.writeFile(".address", address, (error) => {
 		console.error("couldnt write private key", error);
 	}
 
-	console.log("The address was saved!", privateKey);
+	console.log("The address was saved!", address);
 });
