@@ -28,6 +28,7 @@ With initialization complete, you can return to the project by simply running `n
 
 You should now have a local Ganache Ethereum node, with your smart contracts compiled and deployed to it.
 
+Tests can be run with `npm test`
 
 
 ### Architecture
@@ -62,6 +63,7 @@ A library module is used to centralize the set of functions that will be execute
 		* Create a new Resolution
 	   	* @param resolutionName Name of Resolution 
 		* @param resolutionId UUID 
+		* @param duration specified block heigt the resolution will run through 
 		* @param donationTarget address who receives escrowed funds in the event of failure
 		* @param usesValidator  boolean to check if a validatable resolution is being created
  		* @return resolutionId UUID 
@@ -73,6 +75,7 @@ A library module is used to centralize the set of functions that will be execute
 		// validated resolution
 		if(usesValidator){ 
 			resolutions[msg.sender][resolutionId] = Resolution(resolutionName, msg.value, duration, donationTarget, true, true);
+			validators[resolutionId] = Validator(validator, false);
 
 			deposit(resolutionEscrow);	
 
@@ -130,7 +133,6 @@ A library module is used to centralize the set of functions that will be execute
 	
 		resolutions[resolutionCreator][resolutionId].initialized == false;
 
-		// TODO: account for gas
 		// send to donation target
 		return donationTarget.send(resolutions[resolutionCreator][resolutionId].value);
 	}

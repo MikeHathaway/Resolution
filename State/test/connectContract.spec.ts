@@ -8,10 +8,12 @@ import { getTestSigner } from "./ethers";
 import { Resolution } from "../types/ethers-contracts/Resolution";
 import { ResolutionFactory } from "../types/ethers-contracts/ResolutionFactory";
 
-import connectToContract  from "../library/connectContract";
+import connectToContract  from "../../Library/connectContract";
 
+// Test mock contract
 describe("connect to Resolution", () => {
-	function deployResolution(): Promise<Resolution> {
+
+	async function deployResolution(): Promise<Resolution> {
 		const factory = new ResolutionFactory(getTestSigner());
 		//return factory.deploy(0);
 		return factory.deploy();

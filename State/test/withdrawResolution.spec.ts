@@ -1,13 +1,12 @@
 import mocha from 'mocha';
 import assert from 'assert';
 
-import connectToContract  from "../library/connectContract";
+import callCompleteResolution from '../../Library/callCreateResolution';
 
 describe('Events', async function() {
 
 	it('triggers a CompleteResolution event', async function() {
-		const contract = await connectToContract();	
+		const receipt = await callCompleteResolution;	
 
-		console.log("triggers CompleteResolution", contract);
 	});
 });

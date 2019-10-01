@@ -57,6 +57,7 @@ contract Resolution is ConditionalEscrow {
 		* Create a new Resolution
 	   	* @param resolutionName Name of Resolution 
 		* @param resolutionId UUID 
+		* @param duration specified block heigt the resolution will run through 
 		* @param donationTarget address who receives escrowed funds in the event of failure
 		* @param usesValidator  boolean to check if a validatable resolution is being created
  		* @return resolutionId UUID 
@@ -153,13 +154,12 @@ contract Resolution is ConditionalEscrow {
 	*/
 	function burnResolution(string memory resolutionId, address payable donationTarget, address resolutionCreator) public returns (bool) {
 		require(shouldBurn(resolutionCreator, resolutionId));		
-		// log burn to blockchain for display to clients (TODO: Parameterize event fields)
+		// log burn to blockchain for display to clients
 		emit Burn(resolutions[resolutionCreator][resolutionId].value, donationTarget);	
 	
 		resolutions[resolutionCreator][resolutionId].initialized == false;
 
-		// TODO: account for gas
-		// send to donation target
+		// send wagerd stake to donation target specified by resolutionCreator
 		return donationTarget.send(resolutions[resolutionCreator][resolutionId].value);
 	}
 

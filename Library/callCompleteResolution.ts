@@ -1,18 +1,17 @@
 import connectToContract from './connectContract';
 
-export default async function callCompleteResolution(resolutionId: string){
+export default async function callCompleteResolution(resolutionId: string, withdrawalTarget: string){
 
 	const contractWithSigner = connectToContract();
 
 	try {
 		const tx = await contractWithSigner.completeResolution(
 			resolutionId, 
-			'0x0fdaf8757F74e5CAE7DcAd5c0A4A6c27f13eC7FF', 
-			'0x0fdaf8757F74e5CAE7DcAd5c0A4A6c27f13eC7FF' 
+			withdrawalTarget 
 		);
 
-		tx.wait().then(receipt => {
-			//			console.log("Transaction Receipt", receipt);
+		return tx.wait().then(receipt => {
+			return receipt;
 		});
 
 	} catch(error) {
