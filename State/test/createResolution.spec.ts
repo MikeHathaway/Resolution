@@ -9,7 +9,7 @@ import callCreateResolution from '../../Library/callCreateResolution';
 //https://github.com/ethereum-ts/TypeChain/blob/master/test/integration/targets/ethers/DumbContract.spec.ts
 
 
-describe('CreateResolution', function() {
+describe('CreateResolution', async function() {
 	it('should create a non validated Resolution', async function() {
 
 
@@ -28,6 +28,7 @@ describe('CreateResolution', function() {
 			fs.readFileSync(".address").toString().trim()
 		);
 
+		console.log(receipt);
 
 		//assert.equal(event.from, provider[0].address);
 		//assert.equal(event.amount.toNumber(), weiAmount.toNumber());

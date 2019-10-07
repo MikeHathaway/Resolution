@@ -157,5 +157,9 @@ A library module is used to centralize the set of functions that will be execute
 - https://blog.zeppelin.solutions/a-gentle-introduction-to-ethereum-programming-part-3-abdd9644d0c2
 - https://github.com/ethereum/wiki/wiki/JavaScript-API#contract-events
 
+**IPFS**
+- https://medium.com/pinata/how-to-pin-to-ipfs-effortlessly-ba3437b33885
+- https://withblue.ink/2018/11/14/distributed-web-host-your-website-with-ipfs-clusters-cloudflare-and-devops.html
+
 **Market Research**
 - https://www.stickk.com/
