@@ -1,10 +1,13 @@
 const axios = require('axios');
+const FormData = require('form-data');
+const fs = require('fs');
 
-const keys = require('fs').readFileSync('.secrets', 'utf-8')
+const keys = fs.readFileSync('.secrets', 'utf-8')
 	.split('\n');
 
 const generateOptions = (additionalOptions = null) => {
 	return {
+        maxContentLength: 'Infinity', //this is needed to prevent axios from erroring out with large files		
 		headers: {
 			'pinata_api_key': keys[0],
 			'pinata_secret_api_key': keys[1],
@@ -18,7 +21,7 @@ const testAuthentication = () => {
     return axios
         .get(url, generateOptions())
         .then(function (response) {
-			console.log("response", response);
+			//console.log("response", response);
         })
         .catch(function (error) {
             //handle error here
@@ -26,23 +29,25 @@ const testAuthentication = () => {
 };
 
 
+// https://pinata.cloud/documentation#PinFileToIPFS
 const pinFileToIPFS = (file) => {
-    const url = `https://api.pinata.cloud/pinning/pinJSONToIPFS`;
-//we gather a local file from the API for this example, but you can gather the file from anywhere
-	// let data = new FormData();
-	// data.append('file', fs.createReadStream('./yourfile.png'));
+    const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
 
+	// we gather a local file from the API for this example, but you can gather the file from anywhere
+	const data = new FormData();
+	data.append('file', fs.createReadStream(file));
+	
 	return axios.post(
 			url,
-			file,
+			data,
 			generateOptions({'Content-Type': `multipart/form-data; boundary= ${data._boundary}`})
 		).then(function (response) {
-			console.log("pin file response", response);
+			console.log(response.data.IpfsHash);
 		}).catch(function (error) {
-			//handle error here
+			console.error(error);
 		});
 };
 
-testAuthentication();
+//testAuthentication();
 
-//pinFileToIPFS(file);
+pinFileToIPFS('./index.html');
