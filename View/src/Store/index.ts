@@ -3,20 +3,20 @@ import createSagaMiddleware from 'redux-saga'
 import rootSaga from './sagas/index'
 import { web3Reducer } from './reducers'
 
-import { IReviewCoin } from './reducers'
+import { IResolution } from './reducers'
 
 // create the saga middleware
 const sagaMiddleware = createSagaMiddleware()
 
 export interface IRootState {
-    mycurrency: IReviewCoin
+    resolution: IResolution
 }
 
 // TODO: Modify type schema
 
 const store = createStore<IRootState, any, any, any>(
     combineReducers({
-        mycurrency: web3Reducer
+        resolution: web3Reducer
     }), 
     applyMiddleware(sagaMiddleware));
 

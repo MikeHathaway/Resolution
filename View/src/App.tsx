@@ -5,7 +5,7 @@ import { ThemeProvider } from 'styled-components'
 import { Action } from 'typesafe-actions';
 
 import Landing from './Landing/index'
-import TokenManager, { TokenManagerProps } from './TokenManager'
+import ResolutionManager, { ResolutionManagerProps } from './ResolutionManager'
 import './App.css';
 import theme from './theme'
 
@@ -15,7 +15,7 @@ import theme from './theme'
 //   connectWeb3: any
 // }
 
-interface AppProps extends TokenManagerProps {
+interface AppProps extends ResolutionManagerProps {
   connectWeb3: any
 }
 
@@ -35,7 +35,7 @@ class App extends Component<AppProps> {
       <div className="App">
         <Router>
           <Landing />
-          <TokenManager {...this.props}/>
+          <ResolutionManager {...this.props}/>
         </Router>
       {/* <ThemeProvider theme={theme}> */}
 

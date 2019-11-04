@@ -9,17 +9,21 @@ export const CONNECT_WEB3 = 'CONNECT_WEB3';
 export const CONNECT_WEB3_SUCCESS = 'CONNECT_WEB3_SUCCESS';
 export const CONNECT_WEB3_FAILURE = 'CONNECT_WEB3_FAILURE';
 
-export const TRANSFER_TOKEN = 'TRANSFER_TOKEN';
-export const TRANSFER_TOKEN_SUCCESS = 'TRANSFER_TOKEN_SUCCESS';
-export const TRANSFER_TOKEN_FAILURE = 'TRANSFER_TOKEN_FAILURE';
+export const CREATE_RESOLUTION = 'CREATE_RESOLUTION';
+export const CREATE_RESOLUTION_SUCCESS = 'CREATE_RESOLUTION_SUCCESS';
+export const CREATE_RESOLUTION_FAILURE = 'CREATE_RESOLUTION_FAILURE';
+
+export const COMPLETE_RESOLUTION = 'COMPLETE_RESOLUTION';
+export const COMPLETE_RESOLUTION_SUCCESS = 'COMPLETE_RESOLUTION_SUCCESS';
+export const COMPLETE_RESOLUTION_FAILURE = 'COMPLETE_RESOLUTION_FAILURE';
+
+export const BURN_RESOLUTION = 'BURN_RESOLUTION';
+export const BURN_RESOLUTION_SUCCESS = 'BURN_RESOLUTION_SUCCESS';
+export const BURN_RESOLUTION_FAILURE = 'BURN_RESOLUTION_FAILURE';
 
 export const CHECK_BALANCE = 'CHECK_BALANCE';
 export const CHECK_BALANCE_SUCCESS = 'CHECK_BALANCE_SUCCESS';
 export const CHECK_BALANCE_FAILURE = 'CHECK_BALANCE_FAILURE';
-
-export const MINT_TOKENS = 'MINT_TOKENS';
-export const MINT_TOKENS_SUCCESS = 'MINT_TOKENS_SUCCESS';
-export const MINT_TOKENS_FAILURE = 'MINT_TOKENS_FAILURE';
 
 export function connectWeb3(account: string, token: number) {
     return action(CONNECT_WEB3, {
@@ -32,7 +36,7 @@ export function connectWeb3Success(web3: any, account: any, ReviewDAOContract: o
     return action(CONNECT_WEB3_SUCCESS, {
         web3,
         account,
-        ReviewDAOContract
+        ResolutionContract
     });
 }
 
@@ -42,32 +46,44 @@ export function connectWeb3Failure(error: object) {
     });
 }
 
-export function transferToken() {
-    return action(TRANSFER_TOKEN, {});
+export function createResolution() {
+    return action(CREATE_RESOLUTION, {});
 }
 
-export function transferTokenSuccess() {
-    return action(TRANSFER_TOKEN_SUCCESS, {});
+export function createResolutionSuccess() {
+    return action(CREATE_RESOLUTION_SUCCESS, {});
 }
 
-export function transferTokenFailure(error: object) {
-    return action(TRANSFER_TOKEN_FAILURE, {
+export function createResolutionFailure(error: object) {
+    return action(CREATE_RESOLUTION_FAILURE, {
         error
     });
 }
 
-export function mintTokens() {
-    return action(MINT_TOKENS, {});
+export function completeResolution() {
+    return action(COMPLETE_RESOLUTION, {});
 }
 
-export function mintTokensSuccess(token: number) {
-    return action(MINT_TOKENS_SUCCESS, {
-        token
+export function completeResolutionSuccess() {
+    return action(COMPLETE_RESOLUTION_SUCCESS, {});
+}
+
+export function completeResolutionFailure(error: object) {
+    return action(COMPLETE_RESOLUTION_FAILURE, {
+        error
     });
 }
 
-export function mintTokensFailure(error: object) {
-    return action(MINT_TOKENS_FAILURE, {
+export function burnResolution() {
+    return action(BURN_RESOLUTION, {});
+}
+
+export function burnResolutionSuccess() {
+    return action(BURN_RESOLUTION_SUCCESS, {});
+}
+
+export function burnResolutionFailure(error: object) {
+    return action(BURN_RESOLUTION_FAILURE, {
         error
     });
 }

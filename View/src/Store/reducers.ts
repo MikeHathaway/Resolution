@@ -3,16 +3,18 @@ import {
     CHECK_BALANCE_SUCCESS,
     CONNECT_WEB3,
     CONNECT_WEB3_SUCCESS,
-    MINT_TOKENS_SUCCESS
+    CREATE_RESOLUTION_SUCCESS,
+	COMPLETE_RESOLUTION_SUCCESS,
+	BURN_RESOLUTION_SUCCESS
 } from './actions'
 
-export interface IReviewCoin {
+export interface IResolution {
     account: string
-    token: number
+    resolutionId: string 
     isLoading: boolean
 }
 
-export function web3Reducer(state: IReviewCoin = {account: '', token: 0, isLoading: false}, action: Action): IReviewCoin {
+export function web3Reducer(state: IResolution = {account: '', resolutionId: '', isLoading: false}, action: Action): IResolution {
     switch (action.type) {
         case CONNECT_WEB3:
             return { ...state, ...action.payload, isLoading: true };
@@ -20,12 +22,8 @@ export function web3Reducer(state: IReviewCoin = {account: '', token: 0, isLoadi
             return { ...state, ...action.payload, isLoading: false };
         case CHECK_BALANCE_SUCCESS:
             return { ...state, ...action.payload };
-        case MINT_TOKENS_SUCCESS:
-            const prevBalance = state.token || 0
-            const newBalance = action.payload.token
-            const token = prevBalance + newBalance;
-            
-            return { ...state, token }          
+        case CREATE_RESOLUTION_SUCCESS:
+            return { ...state }          
         default:    
             return state;
     }

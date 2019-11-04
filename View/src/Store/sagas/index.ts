@@ -2,13 +2,13 @@ import { takeEvery } from 'redux-saga/effects'
 
 import connectWeb3 from './connectWeb3'
 import checkBalance from './checkBalance'
-import mintTokens from './mintTokens'
-import transfer from './transfer'
+import createResolution from './createResolution'
+import completeResolution from './completeResolution'
+import burnResolution from './burnResolution'
 
-
-export interface ReviewCoinSaga {
+export interface ResolutionSaga {
     web3: any,
-    ReviewDAOContract: any,
+    ResolutionContract: any,
     address: string
 }
 
@@ -17,9 +17,10 @@ export interface ReviewCoinSaga {
 */
 function* rootSaga() {
     yield takeEvery("CONNECT_WEB3", connectWeb3);
-    yield takeEvery("TRANSFER", transfer);
     yield takeEvery("CHECK_BALANCE", checkBalance);
-    yield takeEvery("MINT_TOKENS", mintTokens);
+    yield takeEvery("CREATE_RESOLUTION", createResolution);
+    yield takeEvery("COMPLETE_RESOLUTION", completeResolution);
+    yield takeEvery("BURN_RESOLUTION", burnResolution);
 }
 
 export default rootSaga;
