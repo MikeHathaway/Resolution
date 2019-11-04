@@ -2,7 +2,7 @@ const ethers = require('ethers');
 const contractConfiguration = require('../State/contractConfiguration/Resolution.json');
 const fs = require('fs');
 
-export default function connectToContract(){
+export default function connectToContract(contractConfiguration){
 	const provider = new ethers.providers.JsonRpcProvider()
 
 	const contract = new ethers.Contract(contractConfiguration.address, contractConfiguration.abi, provider);

@@ -8,5 +8,6 @@ package-lock.json
 contractConfiguration/
 .key.txt
 **/types/*
+**/@types/*
 *.swo
 .address

@@ -44,14 +44,14 @@ export default function Landing () {
                         backgroundImage="https://source.unsplash.com/jxaj-UrzQbc/1600x900"
                     >
                         {/* <Loading isLoading={isLoading} /> */}
-                        <Heading>Review DAO</Heading>
+                        <Heading>Resolution</Heading>
                         {/* <Subhead>ReviewDAO is a consortium for generating, organizing, and distributing product reviews.</Subhead> */}
                         <CallToAction onClick={() => { history.push('/token-manager') }} mt={3}>Get Started</CallToAction>
                         <ScrollDownIndicator/>
                     </Hero>
                     <Section
                         bg='white'
-                        heading="What is ReviewDAO"
+                        heading="What is Resolution"
                         subhead="ReviewDAO is an open consortium for trading product reviews between indivduals and corporations."
                     >
                         <Feature icon="🔥" description="Massive dataset of the product reviews based upon UPC">
@@ -66,12 +66,13 @@ export default function Landing () {
                     </Section>
                     <Section 
                         width={1}
-                        heading='Why ReviewDAO?'
+                        heading='Why Resolution?'
                         subhead='maybe this will help'>
                         <Checklist children={[
                             'Open Source',
                             'Participant Owned',
-                            'Practical API'
+							'Practical API',
+							'No additional fees'
                         ]} checkmark={featherCheckmark}/>
                     </Section>
                     {/* <Section

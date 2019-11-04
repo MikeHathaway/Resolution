@@ -50,4 +50,4 @@ const pinFileToIPFS = (file) => {
 
 //testAuthentication();
 
-pinFileToIPFS('./index.html');
+pinFileToIPFS('./public/index.html');
